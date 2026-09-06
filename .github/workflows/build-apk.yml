@@ -37,13 +37,9 @@ jobs:
       - name: Fix Kotlin dependencies
         run: |
           cd android
-          cat >> app/build.gradle <<'EOF'
-
-configurations.all {
-    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'
-    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
-}
-EOF
+          sed -i "/dependencies {/a\    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'" app/build.gradle
+          sed -i "/dependencies {/a\    configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7' }" app/build.gradle
+          sed -i "/dependencies {/a\    configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8' }" app/build.gradle
 
       - name: Build APK
         run: |
@@ -52,4 +48,7 @@ EOF
           ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@
+        uses: actions/upload-artifact@v4
+        with:
+          name: motor-gadget-nepal-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
