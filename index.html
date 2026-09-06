@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor Gadget Nepal - Goal Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#0b0d12;--card:#181c24;--card2:#222733;--red:#ef3e3a;
+ --green:#31c778;--orange:#f5a524;--text:#f4f6fa;--muted:#a8afbc;
+ --border:rgba(255,255,255,.11);--glass:rgba(35,40,51,.72)
+}
+body{font-family:Poppins,Arial,sans-serif;background:#07090d;color:var(--text)}
+button,input,select{font-family:inherit}.hidden{display:none!important}
+.app{width:100%;max-width:540px;margin:auto;min-height:100vh;padding-bottom:92px;background:
+radial-gradient(circle at 100% 0,rgba(239,62,58,.08),transparent 28%),var(--bg)}
+header{position:sticky;top:0;z-index:30;padding:14px 16px 10px;background:rgba(11,13,18,.82);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.brand-row{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:13px;object-fit:cover;background:#050607}
+.brand h1{font-size:16px;font-weight:800;letter-spacing:.1px}.brand p{font-size:11px;color:var(--muted)}
+.month-box{margin-top:11px}.month-select{width:100%;background:rgba(255,255,255,.055);color:var(--text);border:1px solid var(--border);padding:11px 13px;border-radius:13px;outline:none}
+.user-bar{padding:0 16px 10px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between}.role-badge{font-weight:800;letter-spacing:.6px;color:#fff}.logout{background:none;color:var(--red);border:0;font-size:11px;font-weight:700}
+.page{display:none;padding:14px 16px}.page.active{display:block}
+.welcome{margin:4px 0 18px}.welcome h2{font-size:21px;font-weight:800}.welcome p{color:var(--muted);font-size:12px;margin-top:4px}
+.card{background:linear-gradient(135deg,rgba(39,44,55,.84),rgba(25,28,36,.78));border:1px solid var(--border);border-radius:24px;padding:17px;margin-bottom:14px;box-shadow:0 10px 28px rgba(0,0,0,.16);backdrop-filter:blur(14px)}
+.performance{display:flex;align-items:center;gap:18px}.circle{width:102px;height:102px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:conic-gradient(var(--red) calc(var(--progress)*1%),#2b3039 0)}.circle:before{content:"";position:absolute;width:82px;height:82px;border-radius:50%;background:#191d25}.circle span{position:relative;font-size:20px;font-weight:800}
+.performance h3{font-size:16px;margin-bottom:6px}.performance p{color:var(--muted);font-size:11px;line-height:1.55}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px}.section-title h3{font-size:16px;font-weight:800}.section-title span{font-size:11px;color:var(--red)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.small-card{background:linear-gradient(145deg,rgba(40,45,56,.86),rgba(29,33,42,.75));border:1px solid var(--border);padding:15px;border-radius:22px}.small-card i{width:22px;color:var(--red);margin-bottom:10px}.small-card p{font-size:11px;color:var(--muted)}.small-card h3{font-size:19px;margin-top:6px}
+.goal-card{background:rgba(28,32,40,.8);border:1px solid var(--border);border-radius:18px;padding:14px;margin-bottom:10px}.goal-top{display:flex;justify-content:space-between;align-items:center}.goal-name{font-size:13px;font-weight:600;display:flex;gap:8px;align-items:center}.goal-percent{color:var(--red);font-size:12px;font-weight:800}.goal-name i{width:18px;height:18px;color:var(--red)}
+.progress-bar{width:100%;height:7px;background:#2b3039;border-radius:20px;margin:11px 0 7px;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,#e93535,#ff625d);border-radius:20px}.goal-bottom{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+.btn{border:none;cursor:pointer;padding:13px;border-radius:13px;font-size:13px;font-weight:800}.btn-primary{background:linear-gradient(135deg,#f04440,#df302d);color:#fff}.btn-full{width:100%}.btn-outline{background:rgba(255,255,255,.04);color:var(--text);border:1px solid var(--border)}
+.form-group{margin-bottom:14px}.form-group label{display:block;margin-bottom:7px;color:var(--muted);font-size:12px}input,select{width:100%;padding:13px;border-radius:14px;background:rgba(38,43,54,.85);border:1px solid var(--border);color:#fff;outline:none;font-size:14px}input:focus,select:focus{border-color:var(--red)}
+.action-row{display:flex;gap:8px;margin-top:10px}.btn-small{padding:8px 10px;border-radius:9px;font-size:11px}.btn-danger{background:#552222;color:#fff;border:1px solid #803434}.btn-edit{background:#263040;color:#fff;border:1px solid #3b4b66}
+.update-option{display:flex;align-items:center;gap:13px;width:100%;background:rgba(28,32,40,.82);color:white;border:1px solid var(--border);padding:15px;border-radius:17px;margin-bottom:9px;text-align:left;cursor:pointer;font-size:13px}.option-icon i{width:21px;color:var(--red)}.option-text small{display:block;color:var(--muted);margin-top:3px}
+.history-item{display:flex;gap:11px;background:rgba(28,32,40,.82);border:1px solid var(--border);padding:13px;border-radius:16px;margin-bottom:9px}.history-icon{width:40px;height:40px;background:#252a34;border-radius:12px;display:flex;align-items:center;justify-content:center}.history-icon i{width:19px;color:var(--red)}.history-info{flex:1}.history-info h4{font-size:13px}.history-info p{color:var(--muted);font-size:10px;margin-top:4px}.history-value{color:var(--green);font-weight:800;font-size:12px}
+.report-box{text-align:center;padding:23px}.big-number{font-size:40px;font-weight:800;color:var(--red);margin:8px 0}.report-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:12px}.report-row:last-child{border:none}
+.empty{color:var(--muted);text-align:center;padding:24px;font-size:12px}
+.bottom-nav{
+position:fixed;bottom:0;left:0;width:100%;
+background:rgba(20,24,31,.92);
+backdrop-filter:blur(22px);
+border-top:1px solid var(--border);
+z-index:100
+}
+.nav-inner{
+width:100%;max-width:540px;margin:auto;
+height:76px;
+display:grid;
+grid-template-columns:repeat(5,minmax(0,1fr));
+align-items:stretch
+}
+.nav-item{
+width:100%;height:76px;min-width:0;
+background:none;border:none;
+color:var(--muted);
+font-size:11px;
+font-weight:600;
+cursor:pointer;
+padding:10px 0 7px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:6px;
+text-align:center;
+line-height:1.1;
+white-space:nowrap
+}
+.nav-item i{
+display:block;
+width:23px;height:23px;
+margin:0;
+flex:0 0 23px
+}
+.nav-item.active{color:var(--red)}
+.nav-inner.owner-mode{grid-template-columns:repeat(4,minmax(0,1fr))}
+.login-screen{min-height:100vh;background:#090b10;display:flex;align-items:center;justify-content:center;padding:20px}.login-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--border);border-radius:25px;padding:26px}.login-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}.login-card h1{font-size:19px}.login-card p{color:var(--muted);font-size:12px}.error{color:#ff7676;font-size:12px;margin:9px 0}
+.status-card{border-left:3px solid var(--green)}.status-time{font-size:18px;font-weight:700;margin:8px 0}.status-muted{color:var(--muted);font-size:11px}.home-status-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:13px}.home-status-row:last-child{border:none}.home-status-row span{color:var(--muted)}.history-value.neutral{color:var(--muted)}
+.calendar-card{padding:12px;overflow:hidden}.calendar-weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;width:100%;max-width:100%}.calendar-weekdays{margin-bottom:6px}.calendar-weekdays div{min-width:0;text-align:center;font-size:10px;color:var(--muted)}.calendar-day{min-width:0;width:100%;aspect-ratio:1/1;min-height:0;height:auto;display:flex;align-items:center;justify-content:center;border-radius:11px;font-size:13px;background:rgba(255,255,255,.035);border:1px solid var(--border)}.calendar-day.complete{background:rgba(49,199,120,.14);border-color:rgba(49,199,120,.35)}.calendar-day.partial{background:rgba(245,165,36,.13);border-color:rgba(245,165,36,.35)}.calendar-day.no-update{background:rgba(239,62,58,.09);border-color:rgba(239,62,58,.22)}.calendar-day.today{border:2px solid var(--red)}.calendar-day.future{opacity:.35}.calendar-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted)}.legend-item{display:flex;align-items:center;gap:5px}.legend-dot{width:9px;height:9px;border-radius:50%}.lg-green{background:var(--green)}.lg-orange{background:var(--orange)}.lg-red{background:var(--red)}
+.date-row{display:flex;gap:10px;align-items:end}.date-row .form-group{flex:1}
+@media(max-width:380px){.nav-item{font-size:9px;gap:5px}.nav-item i{width:21px;height:21px;flex-basis:21px}}
+@media(max-width:380px){.page{padding-left:12px;padding-right:12px}.calendar-card{padding:10px}.calendar-weekdays,.calendar-grid{gap:4px}.calendar-day{border-radius:10px;font-size:12px}.nav-item{font-size:9px}}@media(min-width:600px){.app{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
+
+/* Login page: lock the screen so it never scrolls */
+html:has(#loginScreen:not(.hidden)),
+body:has(#loginScreen:not(.hidden)){height:100%;overflow:hidden}
+.login-screen{position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{max-height:calc(100dvh - 40px);overflow:hidden}
+
+html:has(#loginScreen:not(.hidden)),
+body:has(#loginScreen:not(.hidden)){height:100%;overflow:hidden}
+.login-card{max-height:calc(100dvh - 40px);overflow:hidden}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="login-screen">
+ <div class="login-card">
+  <div class="login-head"><img class="logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdvqgPCnC_AXhPELJtC6L2idcPy4rm-TQC5n-bdPzpibAdX_W5YY1K5DSEBn4PORXRUvF41gqAZ52mFttKQqxC6NIgG3d4cr6gtUySaEtqABiIFkT2FNiAUQnbYWfEDAh5ZRIbP0dM09WwUazDTAiIonsZx4M-xvI-9e62v9xvYcWSGlFFrPfYnpFRq-rO/s3760/44847.jpg"><div><h1>MOTOR GADGET NEPAL</h1><p>Goal Tracker</p></div></div>
+  <div class="form-group"><label>Email</label><input id="email" type="email" placeholder="Enter your email"></div>
+  <div class="form-group"><label>Password</label><input id="password" type="password" placeholder="Enter your password"></div>
+  <div id="loginError" class="error"></div><button class="btn btn-primary btn-full" id="loginBtn">LOGIN</button>
+ </div>
+</div>
+
+<div id="appShell" class="hidden"><div class="app">
+<header>
+ <div class="brand-row"><img class="logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdvqgPCnC_AXhPELJtC6L2idcPy4rm-TQC5n-bdPzpibAdX_W5YY1K5DSEBn4PORXRUvF41gqAZ52mFttKQqxC6NIgG3d4cr6gtUySaEtqABiIFkT2FNiAUQnbYWfEDAh5ZRIbP0dM09WwUazDTAiIonsZx4M-xvI-9e62v9xvYcWSGlFFrPfYnpFRq-rO/s3760/44847.jpg"><div class="brand"><h1>MOTOR GADGET NEPAL</h1><p>Goal Tracker</p></div></div>
+ <div class="month-box"><select id="monthSelector" class="month-select"></select></div>
+</header>
+<div class="user-bar"><span id="userInfo"></span><button id="logoutBtn" class="logout">Logout</button></div>
+
+<section id="homePage" class="page active">
+ <div class="welcome"><h2 id="greeting">Good Morning</h2><p id="homeMonth"></p></div>
+ <div class="card performance"><div class="circle" id="overallCircle" style="--progress:0"><span id="overallPercent">0%</span></div><div><h3>Overall Progress</h3><p>Your monthly performance based on all active goals.</p></div></div>
+ <div class="section-title"><h3>Overview</h3><span>This Month</span></div>
+ <div class="grid">
+  <div class="small-card"><i data-lucide="users"></i><p>Customers</p><h3 id="customerOverview">0 / 0</h3></div>
+  <div class="small-card"><i data-lucide="wallet"></i><p>Revenue</p><h3 id="revenueOverview">Rs. 0</h3></div>
+  <div class="small-card"><i data-lucide="shopping-cart"></i><p>Online Sales</p><h3 id="onlineOverview">0 / 0</h3></div>
+  <div class="small-card"><i data-lucide="trophy"></i><p>Completed</p><h3 id="completedOverview">0 / 0</h3></div>
+ </div>
+ <div class="section-title"><h3>Monthly Update Calendar</h3><span>Green = Complete</span></div>
+ <div class="card calendar-card"><div class="calendar-weekdays"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div><div id="calendarGrid" class="calendar-grid"></div><div class="calendar-legend"><div class="legend-item"><span class="legend-dot lg-green"></span>Complete</div><div class="legend-item"><span class="legend-dot lg-orange"></span>Partial</div><div class="legend-item"><span class="legend-dot lg-red"></span>No update</div></div></div>
+ <div class="section-title"><h3>Today's Shop Status</h3><span id="homeShopDate"></span></div><div class="card status-card"><div id="homeShopStatus"></div></div>
+ <div class="section-title"><h3>Goal Progress</h3><span>Live</span></div><div id="homeGoals"></div>
+</section>
+
+<section id="goalsPage" class="page">
+ <div class="welcome"><h2>Monthly Goals</h2><p>Both <b>STAFF</b> and <b>OWNER</b> can manage goals.</p></div>
+ <div class="card"><h3 style="margin-bottom:15px">Add Custom Goal</h3>
+  <div class="form-group"><label>Goal Name</label><input id="newGoalName" placeholder="Example: Google Reviews"></div>
+  <div class="form-group"><label>Icon Name (Lucide)</label><input id="newGoalIcon" placeholder="Example: star"></div>
+  <div class="form-group"><label>Goal Type</label><select id="newGoalType"><option value="number">Number</option><option value="currency">Currency (Rs.)</option></select></div>
+  <div class="form-group"><label>Target</label><input id="newGoalTarget" type="number" min="1"></div><button class="btn btn-primary btn-full" id="addGoalBtn">ADD GOAL</button>
+ </div><div class="section-title"><h3>Manage Goals</h3></div><div id="goalEditor"></div>
+</section>
+
+<section id="updatePage" class="page">
+ <div class="welcome"><h2>Daily Update</h2><p>Choose any date to add missed updates.</p></div>
+ <div class="card"><div class="form-group"><label>Update Date</label><input type="date" id="updateDate"></div></div>
+ <div class="card status-card"><h3 style="font-size:15px">Daily Shop Status</h3><div id="shopStatusBox" style="margin-top:10px"></div><div class="action-row"><button class="btn btn-primary btn-full" id="openShopBtn">MARK OPEN</button><button class="btn btn-outline btn-full" id="closeShopBtn">MARK CLOSED</button></div></div>
+ <div class="section-title"><h3>Goal Progress</h3></div><div id="updateOptions"></div>
+ <div id="updateForm" class="card hidden"><button class="btn btn-outline" id="backBtn" style="margin-bottom:14px">← Back</button><h3 id="updateTitle" style="margin-bottom:16px"></h3><div class="form-group"><label>Amount to Add</label><input type="number" id="updateValue" min="0"></div><button class="btn btn-primary btn-full" id="saveProgressBtn">SAVE PROGRESS</button></div>
+</section>
+
+<section id="historyPage" class="page"><div class="welcome"><h2>Update History</h2><p>Edit or delete wrong entries.</p></div><div id="historyList"></div></section>
+<section id="reportsPage" class="page"><div class="welcome"><h2>Monthly Report</h2><p id="reportMonth"></p></div><div class="card report-box"><p style="color:#9ca3af;font-size:11px">OVERALL PERFORMANCE</p><div class="big-number" id="reportOverall">0%</div><p id="reportMessage" style="color:#9ca3af;font-size:11px"></p></div><div class="card"><div class="report-row"><span>Completed Goals</span><strong id="reportCompleted">0 / 0</strong></div><div class="report-row"><span>Best Performing</span><strong id="bestGoal">-</strong></div><div class="report-row"><span>Needs Attention</span><strong id="weakGoal">-</strong></div></div><div class="section-title"><h3>Goal Results</h3></div><div id="reportGoals"></div></section>
+</div>
+<nav class="bottom-nav"><div class="nav-inner">
+<button class="nav-item active" data-page="home"><i data-lucide="house"></i>Home</button>
+<button class="nav-item" data-page="goals"><i data-lucide="flag"></i>Goals</button>
+<button class="nav-item" data-page="update" id="updateNav"><i data-lucide="plus-circle"></i>Update</button>
+<button class="nav-item" data-page="history"><i data-lucide="history"></i>History</button>
+<button class="nav-item" data-page="reports"><i data-lucide="bar-chart-3"></i>Reports</button>
+</div></nav></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyARpoZCpKriy49Q_jLBpLet_RXNud2J1jc",authDomain:"motor-gadget-npl-goal-tracker.firebaseapp.com",projectId:"motor-gadget-npl-goal-tracker",storageBucket:"motor-gadget-npl-goal-tracker.firebasestorage.app",messagingSenderId:"1077326568847",appId:"1:1077326568847:web:f466c41c1d09524a14fffa"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const templates={customers:{name:"Customers",icon:"users",type:"number"},revenue:{name:"Revenue",icon:"wallet",type:"currency"},onlineSales:{name:"Online Sales",icon:"shopping-cart",type:"number"},facebook:{name:"Facebook Growth",icon:"thumbs-up",type:"number"},instagram:{name:"Instagram Growth",icon:"camera",type:"number"},tiktok:{name:"TikTok Growth",icon:"music-2",type:"number"},youtube:{name:"YouTube Growth",icon:"youtube",type:"number"}};
+function createMonthData(){let goals={};for(const[k,v]of Object.entries(templates))goals[k]={...v,current:0,target:k==="revenue"?25000:k==="onlineSales"?15:k==="customers"?100:1000};return{goals,history:[],shopDays:{}}}
+function keyNow(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`}
+function label(k){const[a,b]=k.split("-");return new Date(+a,+b-1,1).toLocaleDateString("en-US",{month:"long",year:"numeric"})}
+function localDateKey(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return`${y}-${m}-${day}`}
+let userRole=null,currentUser=null,selectedMonth=keyNow(),monthData=createMonthData(),unsub=null,selectedGoalKey=null;
+const monthDoc=()=>doc(db,"goalTracker",selectedMonth);
+const pct=g=>Number(g.target)<=0?0:Math.min(Math.round(g.current/g.target*100),100);
+const overall=()=>{const a=Object.values(monthData.goals);return a.length?Math.round(a.reduce((s,g)=>s+pct(g),0)/a.length):0};
+const completed=()=>Object.values(monthData.goals).filter(g=>g.current>=g.target).length;
+const fv=g=>g.type==="currency"?"Rs. "+Number(g.current).toLocaleString():g.current;
+const ft=g=>g.type==="currency"?"Rs. "+Number(g.target).toLocaleString():g.target;
+function icon(n){return `<i data-lucide="${String(n||'target').replace(/[^a-z0-9-]/gi,'')}"></i>`}
+function goalCard(g){const p=pct(g);return`<div class="goal-card"><div class="goal-top"><div class="goal-name">${icon(g.icon)} ${g.name}</div><div class="goal-percent">${p}%</div></div><div class="progress-bar"><div class="progress-fill" style="width:${p}%"></div></div><div class="goal-bottom"><span>${fv(g)}</span><span>Target: ${ft(g)}</span></div></div>`}
+async function ensureMonth(k){const r=doc(db,"goalTracker",k),x=await getDoc(r);if(!x.exists())await setDoc(r,{...createMonthData(),month:k,updatedAt:Date.now()})}
+function listen(){if(unsub)unsub();unsub=onSnapshot(monthDoc(),x=>{if(x.exists()){monthData=x.data();monthData.history??=[];monthData.shopDays??={};renderAll()}})}
+function updateMonthSelector(){const s=document.getElementById("monthSelector");const now=new Date(),opts=[];for(let i=-6;i<=6;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1),k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;opts.push(`<option value="${k}">${label(k)}</option>`)}s.innerHTML=opts.join("");if(![...s.options].some(o=>o.value===selectedMonth)){const o=document.createElement("option");o.value=selectedMonth;o.textContent=label(selectedMonth);s.appendChild(o)}s.value=selectedMonth}
+async function changeMonth(){selectedMonth=monthSelector.value;await ensureMonth(selectedMonth);listen()}
+function greetingText(){const h=new Date().getHours(),role=(userRole||"user").toUpperCase();if(h<12)return`Good Morning, ${role}`;if(h<17)return`Good Afternoon, ${role}`;if(h<21)return`Good Evening, ${role}`;return`Good Night, ${role}`}
+function renderHome(){const g=monthData.goals,o=overall();greeting.textContent=greetingText();homeMonth.textContent=label(selectedMonth);overallPercent.textContent=o+"%";overallCircle.style.setProperty("--progress",o);customerOverview.textContent=g.customers?`${g.customers.current} / ${g.customers.target}`:"-";revenueOverview.textContent=g.revenue?"Rs. "+Number(g.revenue.current).toLocaleString():"-";onlineOverview.textContent=g.onlineSales?`${g.onlineSales.current} / ${g.onlineSales.target}`:"-";completedOverview.textContent=`${completed()} / ${Object.keys(g).length}`;homeGoals.innerHTML=Object.values(g).map(goalCard).join("")||'<div class="empty">No goals.</div>';renderCalendar();renderHomeShop()}
+function renderCalendar(){const [y,m]=selectedMonth.split("-").map(Number),days=new Date(y,m,0).getDate(),first=new Date(y,m-1,1).getDay(),today=localDateKey(),cells=[];for(let i=0;i<first;i++)cells.push('<div></div>');for(let d=1;d<=days;d++){const key=`${selectedMonth}-${String(d).padStart(2,"0")}`,hist=monthData.history.filter(x=>x.updateDate===key&&x.eventType!=="goal_removed"),shop=monthData.shopDays?.[key];let cls="calendar-day";const isFuture=key>today;if(isFuture)cls+=" future";else if(hist.length||shop?.open){const completeGoals=Object.keys(monthData.goals).length>0&&hist.length>=Object.keys(monthData.goals).length;cls+=completeGoals?" complete":" partial"}else cls+=" no-update";if(key===today)cls+=" today";cells.push(`<div class="${cls}">${d}</div>`)}calendarGrid.innerHTML=cells.join("")}
+function renderHomeShop(){const d=monthData.shopDays?.[localDateKey()];homeShopDate.textContent=new Date().toLocaleDateString();if(!d?.open){homeShopStatus.innerHTML='<div class="empty" style="padding:10px">Shop has not been marked open today.</div>';return}let html=`<div class="home-status-row"><span>Opened</span><strong>${d.open.time}</strong></div>`;if(d.close)html+=`<div class="home-status-row"><span>Closed</span><strong>${d.close.time}</strong></div><div class="home-status-row"><span>Total Open Hours</span><strong>${shopDuration(d)}</strong></div>`;else html+=`<div class="home-status-row"><span>Closed</span><strong style="color:var(--muted)">Not marked yet</strong></div>`;homeShopStatus.innerHTML=html}
+function renderGoals(){goalEditor.innerHTML=Object.entries(monthData.goals).map(([k,g])=>`<div class="card"><div class="form-group"><label>Goal Name</label><input id="name_${k}" value="${g.name}"></div><div class="form-group"><label>Icon Name</label><input id="icon_${k}" value="${g.icon||'target'}"></div><div class="form-group"><label>Target</label><input type="number" id="target_${k}" value="${g.target}" min="1"></div><div class="action-row"><button class="btn btn-primary btn-full" data-savegoal="${k}">SAVE</button><button class="btn btn-danger btn-full" data-deletegoal="${k}">REMOVE</button></div></div>`).join("")||'<div class="empty">No goals yet.</div>';document.querySelectorAll("[data-savegoal]").forEach(b=>b.onclick=()=>saveGoal(b.dataset.savegoal));document.querySelectorAll("[data-deletegoal]").forEach(b=>b.onclick=()=>removeGoal(b.dataset.deletegoal))}
+async function addGoal(){const name=newGoalName.value.trim(),icon=newGoalIcon.value.trim()||"target",type=newGoalType.value,target=Number(newGoalTarget.value);if(!name||!target||target<=0)return alert("Enter valid goal name and target.");const goals=structuredClone(monthData.goals);goals["custom_"+Date.now()]={name,icon,type,target,current:0,custom:true};await updateDoc(monthDoc(),{goals,updatedAt:Date.now()});newGoalName.value=newGoalIcon.value=newGoalTarget.value=""}
+async function saveGoal(k){const goals=structuredClone(monthData.goals),g=goals[k],name=document.getElementById("name_"+k).value.trim(),icon=document.getElementById("icon_"+k).value.trim()||"target",target=Number(document.getElementById("target_"+k).value);if(!name||!target||target<=0)return alert("Enter valid values.");Object.assign(g,{name,icon,target});await updateDoc(monthDoc(),{goals,updatedAt:Date.now()})}
+async function removeGoal(k){const g=monthData.goals[k];if(!confirm(`Remove "${g.name}" from this month?`))return;const data=structuredClone(monthData),now=new Date();delete data.goals[k];data.history.unshift({id:"sys_"+Date.now(),eventType:"goal_removed",name:g.name,icon:"trash-2",type:"system",date:now.toLocaleDateString(),time:now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),timestamp:Date.now(),message:`Goal removed: ${g.name}`});await updateDoc(monthDoc(),{goals:data.goals,history:data.history,updatedAt:Date.now()})}
+function renderUpdates(){if(userRole!=="staff"){updateOptions.innerHTML='<div class="empty">Only STAFF can update daily progress.</div>';return}updateOptions.innerHTML=Object.entries(monthData.goals).map(([k,g])=>`<button class="update-option" data-goal="${k}"><div class="option-icon">${icon(g.icon)}</div><div class="option-text"><strong>${g.name}</strong><small>Current: ${fv(g)}</small></div></button>`).join("");document.querySelectorAll("[data-goal]").forEach(b=>b.onclick=()=>openUpdate(b.dataset.goal))}
+function shopDuration(day){if(!day?.open||!day?.close)return"";const ms=day.close.timestamp-day.open.timestamp,h=Math.floor(ms/3600000),mi=Math.floor(ms%3600000/60000);return`${h}h ${mi}m`}
+function selectedDate(){return updateDate.value||localDateKey()}
+function timeForDate(action){const date=selectedDate(),now=new Date(),def=now.toTimeString().slice(0,5);let t=prompt(`Enter actual ${action} time (HH:MM)`,def);if(t===null)return null;t=t.trim();if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(t)){alert("Invalid time. Example: 09:30");return null}const[h,m]=t.split(":").map(Number),d=new Date(date+"T00:00:00");d.setHours(h,m,0,0);return{time:t,timestamp:d.getTime(),custom:true}}
+function renderShop(){const day=monthData.shopDays?.[selectedDate()];let html=`<div class="status-muted">Date: ${selectedDate()}</div>`;html+=day?.open?`<div class="status-time">Opened: ${day.open.time}</div>`:`<div class="status-time">Not opened yet</div>`;html+=day?.close?`<div class="status-time">Closed: ${day.close.time}</div><div class="status-muted">Total: ${shopDuration(day)}</div>`:"";shopStatusBox.innerHTML=html;openShopBtn.disabled=!!day?.open;closeShopBtn.disabled=!day?.open||!!day?.close}
+async function markShop(action){if(userRole!=="staff")return;const data=structuredClone(monthData),k=selectedDate();data.shopDays[k]??={};if(action==="open"){if(data.shopDays[k].open)return alert("Already marked open.");const t=timeForDate("opening");if(!t)return;data.shopDays[k].open={...t,by:currentUser.uid}}else{if(!data.shopDays[k].open)return alert("Mark shop open first.");if(data.shopDays[k].close)return alert("Already marked closed.");const t=timeForDate("closing");if(!t)return;if(t.timestamp<data.shopDays[k].open.timestamp)return alert("Closing time cannot be earlier than opening time.");data.shopDays[k].close={...t,by:currentUser.uid}}await updateDoc(monthDoc(),{shopDays:data.shopDays,updatedAt:Date.now()})}
+function openUpdate(k){selectedGoalKey=k;const g=monthData.goals[k];updateOptions.classList.add("hidden");updateForm.classList.remove("hidden");updateTitle.textContent=`Add ${g.name}`;updateValue.value="";updateValue.focus()}
+function backUpdate(){updateOptions.classList.remove("hidden");updateForm.classList.add("hidden");selectedGoalKey=null}
+async function saveProgress(){if(userRole!=="staff"||!selectedGoalKey)return;const value=Number(updateValue.value);if(!value||value<=0)return alert("Enter a valid value.");const data=structuredClone(monthData),g=data.goals[selectedGoalKey],now=new Date(),id="h_"+Date.now();g.current+=value;data.history.unshift({id,goalKey:selectedGoalKey,name:g.name,icon:g.icon,value,type:g.type,date:now.toLocaleDateString(),time:now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),updateDate:selectedDate(),updatedBy:currentUser.uid,timestamp:Date.now()});await updateDoc(monthDoc(),{goals:data.goals,history:data.history,updatedAt:Date.now()});backUpdate()}
+function renderHistory(){if(!monthData.history.length){historyList.innerHTML='<div class="empty">No updates yet.</div>';return}historyList.innerHTML=monthData.history.map(i=>{if(i.eventType==="goal_removed")return`<div class="history-item"><div class="history-icon">${icon("trash-2")}</div><div class="history-info"><h4>Goal Removed</h4><p>${i.message}</p><p>${i.date} • ${i.time}</p></div><div class="history-value neutral">System</div></div>`;const v=i.type==="currency"?"+ Rs. "+Number(i.value).toLocaleString():"+ "+i.value;return`<div class="history-item"><div class="history-icon">${icon(i.icon)}</div><div class="history-info"><h4>${i.name}</h4><p>${i.updateDate||i.date} • ${i.time}</p><div class="action-row"><button class="btn btn-edit btn-small" data-edit="${i.id}">Edit</button><button class="btn btn-danger btn-small" data-del="${i.id}">Delete</button></div></div><div class="history-value">${v}</div></div>`}).join("");document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editHistory(b.dataset.edit));document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteHistory(b.dataset.del))}
+async function editHistory(id){const item=monthData.history.find(x=>x.id===id);if(!item)return;const n=Number(prompt(`Change value for ${item.name}:`,item.value));if(!n||n<=0)return;const data=structuredClone(monthData),i=data.history.findIndex(x=>x.id===id),old=data.history[i];if(data.goals[old.goalKey])data.goals[old.goalKey].current=Math.max(0,data.goals[old.goalKey].current-old.value+n);data.history[i].value=n;await updateDoc(monthDoc(),{goals:data.goals,history:data.history,updatedAt:Date.now()})}
+async function deleteHistory(id){const item=monthData.history.find(x=>x.id===id);if(!item||!confirm(`Delete this ${item.name} update?`))return;const data=structuredClone(monthData);if(data.goals[item.goalKey])data.goals[item.goalKey].current=Math.max(0,data.goals[item.goalKey].current-item.value);data.history=data.history.filter(x=>x.id!==id);await updateDoc(monthDoc(),{goals:data.goals,history:data.history,updatedAt:Date.now()})}
+function renderReports(){const a=Object.values(monthData.goals),o=overall();reportMonth.textContent=label(selectedMonth);reportOverall.textContent=o+"%";reportCompleted.textContent=`${completed()} / ${a.length}`;if(a.length){const sorted=[...a].sort((x,y)=>pct(y)-pct(x));bestGoal.textContent=`${sorted[0].name} (${pct(sorted[0])}%)`;const w=sorted[sorted.length-1];weakGoal.textContent=`${w.name} (${pct(w)}%)`}else bestGoal.textContent=weakGoal.textContent="-";reportMessage.textContent=o>=100?"Excellent! All goals completed.":o>=75?"Great progress. Keep pushing.":o>=50?"Halfway there. Stay consistent.":"You need to increase your progress.";reportGoals.innerHTML=a.map(goalCard).join("")||'<div class="empty">No goals.</div>'}
+function renderAll(){updateMonthSelector();if(!updateDate.value)updateDate.value=localDateKey();renderHome();renderGoals();renderUpdates();renderHistory();renderReports();renderShop();if(window.lucide)lucide.createIcons()}
+function showPage(n,b){if(n==="update"&&userRole!=="staff")return alert("Only STAFF can update daily progress.");document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));document.getElementById(n+"Page").classList.add("active");document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderAll()}
+loginBtn.onclick=async()=>{loginError.textContent="";try{await signInWithEmailAndPassword(auth,email.value.trim(),password.value)}catch(e){loginError.textContent="Login failed: "+(e.code||e.message)}};
+logoutBtn.onclick=()=>signOut(auth);monthSelector.onchange=changeMonth;addGoalBtn.onclick=addGoal;saveProgressBtn.onclick=saveProgress;backBtn.onclick=backUpdate;openShopBtn.onclick=()=>markShop("open");closeShopBtn.onclick=()=>markShop("close");updateDate.onchange=renderShop;document.querySelectorAll(".nav-item").forEach(b=>b.onclick=()=>showPage(b.dataset.page,b));
+onAuthStateChanged(auth,async u=>{currentUser=u;if(!u){if(unsub)unsub();appShell.classList.add("hidden");loginScreen.classList.remove("hidden");return}const rs=await getDoc(doc(db,"users",u.uid));userRole=rs.exists()?rs.data().role:null;if(!userRole){alert("This account has no role permission.");return signOut(auth)}loginScreen.classList.add("hidden");appShell.classList.remove("hidden");userInfo.innerHTML=`<span class="role-badge">${userRole.toUpperCase()}</span> • ${u.email}`;updateNav.classList.toggle("hidden",userRole!=="staff");
+document.querySelector(".nav-inner").classList.toggle("owner-mode",userRole!=="staff");
+await ensureMonth(selectedMonth);listen()});
+</script>
+</body></html>
