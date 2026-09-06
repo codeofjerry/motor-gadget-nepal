@@ -14,10 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fix Kotlin dependencies
-        run: |
-          cd android
-          sed -i 's/ext.kotlin_version = .*/ext.kotlin_version = "1.8.22"/' build.gradle
+      
 
           
       - name: Setup Java
